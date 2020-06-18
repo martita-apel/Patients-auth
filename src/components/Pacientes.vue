@@ -15,7 +15,14 @@
           <td>{{ p.data.lastname }}</td>
           <td>{{ p.data.email }}</td>
           <td>{{ p.data.age }}</td>
-          <td><b-button variant="success">Editar</b-button></td>
+          <td>
+            <b-button
+              variant="success"
+              class="text-right"
+              @click="editarPatient(p.id)"
+              >Editar</b-button
+            >
+          </td>
           <td>
             <b-button variant="danger" @click="eliminarPatient(p.id)"
               >Eliminar</b-button
@@ -39,12 +46,21 @@ export default {
     ...mapState(["patients"]),
   },
   methods: {
-    ...mapActions(["getPatients", "deletePatient"]),
+    ...mapActions([
+      "getPatients",
+      "deletePatient",
+      "updateEdit",
+      "findPatient",
+    ]),
     eliminarPatient(id) {
       const confirmar = confirm("¿Seguro que quieres eliminar este paciente?");
       if (confirmar) {
         this.deletePatient(id);
       }
+    },
+    editarPatient(id) {
+      this.updateEdit();
+      this.findPatient(id);
     },
   },
   created() {

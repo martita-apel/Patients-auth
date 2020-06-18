@@ -15,7 +15,16 @@ router.get("/patient/:id", async (req, res) => {
     .firestore()
     .collection("patients")
     .doc(req.params.id)
-    .get();
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        return { id: doc.id, data: doc.data() };
+      } else {
+        console.log("No such document!");
+        return {};
+      }
+    });
   res.send(patient);
 });
 

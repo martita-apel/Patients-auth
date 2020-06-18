@@ -16,6 +16,7 @@ export default new Vuex.Store({
         age: "",
       },
     },
+    edit: false,
   },
   mutations: {
     GET_PATIENTS(state, patients) {
@@ -32,6 +33,12 @@ export default new Vuex.Store({
     },
     ADD_AGE(state, age) {
       state.patient.data.age = age;
+    },
+    UPDATE_EDIT(state) {
+      state.edit = !state.edit;
+    },
+    SET_PATIENT(state, patient) {
+      state.patient = patient;
     },
   },
   actions: {
@@ -66,6 +73,19 @@ export default new Vuex.Store({
         )
         .then(() => {
           dispatch("getPatients");
+        });
+    },
+    updateEdit({ commit }) {
+      commit("UPDATE_EDIT");
+    },
+    findPatient({ commit }, id) {
+      axios
+        .get(
+          `https://us-central1-pacientes-d1b71.cloudfunctions.net/patients/patient/${id}`,
+          { headers: { "Content-type": "application/json" } }
+        )
+        .then((response) => {
+          commit("SET_PATIENT", response.data);
         });
     },
     deletePatient({ dispatch }, id) {

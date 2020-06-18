@@ -1,7 +1,18 @@
 <template>
   <b-card style="max-width: 30rem" class="mx-auto p-2 mt-3 mb-4">
     <b-form>
-      <h3 class="pb-0">Ingresar nuevo paciente</h3>
+      <h3 class="pb-0">
+        Ingresar nuevo paciente
+        <b-button
+          class="my-1 mx-1"
+          size="sm"
+          variant="info"
+          v-if="edit"
+          @click="actualizarPatient"
+          >Actualizar</b-button
+        >
+      </h3>
+
       <b-form inline>
         <b-form-input
           class="my-1 mx-1"
@@ -46,14 +57,6 @@
           >Añadir</b-button
         >
       </b-form>
-
-      <!--  <b-button
-        type="primary"
-        v-if="edit"
-        :loading="loading"
-        @click="editPatient"
-        >Editar</b-button
-      > -->
     </b-form>
   </b-card>
 </template>
@@ -68,7 +71,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["patient"]),
+    ...mapState(["patient", "edit"]),
   },
   methods: {
     ...mapActions([
@@ -78,6 +81,7 @@ export default {
       "addLastname",
       "addEmail",
       "addAge",
+      "updatePatient",
     ]),
     login(e) {
       e.preventDefault();
@@ -96,6 +100,9 @@ export default {
     agregarPatient() {
       this.addPatient();
       alert("¡El paciente se ha registrado exitosamente!");
+    },
+    actualizarPatient() {
+      this.updatePatient();
     },
   },
   created() {
