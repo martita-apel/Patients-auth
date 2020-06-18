@@ -7,7 +7,9 @@
 
     <hr />
 
-    <router-view />
+    <b-overlay :show="loading" rounded="lg" variant="light" opacity="0.85">
+      <router-view />
+    </b-overlay>
 
     <footer class="fixed">
       <div class="iconos container-fluid py-3">
@@ -32,11 +34,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "App",
   data() {
     return {};
   },
+  computed: { ...mapState(["loading"]) },
 };
 </script>
 

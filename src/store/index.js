@@ -17,6 +17,7 @@ export default new Vuex.Store({
       },
     },
     edit: false,
+    loading: false,
   },
   mutations: {
     GET_PATIENTS(state, patients) {
@@ -40,15 +41,25 @@ export default new Vuex.Store({
     SET_PATIENT(state, patient) {
       state.patient = patient;
     },
+    LOADING(state) {
+      state.loading = true;
+    },
+    STOP_LOADING(state) {
+      state.loading = false;
+    },
   },
   actions: {
     getPatients({ commit }) {
+      commit("LOADING");
       axios
         .get(
           "https://us-central1-pacientes-d1b71.cloudfunctions.net/patients/patients"
         )
         .then((response) => {
           commit("GET_PATIENTS", response.data);
+        })
+        .finally(() => {
+          commit("STOP_LOADING");
         });
     },
     addName({ commit }, name) {
@@ -63,7 +74,8 @@ export default new Vuex.Store({
     addAge({ commit }, age) {
       commit("ADD_AGE", age);
     },
-    addPatient({ dispatch, state }) {
+    addPatient({ commit, dispatch, state }) {
+      commit("LOADING");
       const paciente = state.patient.data;
       axios
         .post(
@@ -88,7 +100,8 @@ export default new Vuex.Store({
           commit("SET_PATIENT", response.data);
         });
     },
-    updatePatient({ dispatch, state }, id) {
+    updatePatient({ commit, dispatch, state }, id) {
+      commit("LOADING");
       const paciente = state.patient.data;
       axios
         .put(
@@ -99,7 +112,8 @@ export default new Vuex.Store({
           dispatch("getPatients");
         });
     },
-    deletePatient({ dispatch }, id) {
+    deletePatient({ commit, dispatch }, id) {
+      commit("LOADING");
       axios
         .delete(
           `https://us-central1-pacientes-d1b71.cloudfunctions.net/patients/patient/${id}`
