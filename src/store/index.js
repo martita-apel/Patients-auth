@@ -68,5 +68,14 @@ export default new Vuex.Store({
           dispatch("getPatients");
         });
     },
+    deletePatient({ dispatch }, id) {
+      axios
+        .delete(
+          `https://us-central1-pacientes-d1b71.cloudfunctions.net/patients/patient/${id}`
+        )
+        .then(() => {
+          dispatch("getPatients");
+        });
+    },
   },
 });

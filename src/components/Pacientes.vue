@@ -16,7 +16,11 @@
           <td>{{ p.data.email }}</td>
           <td>{{ p.data.age }}</td>
           <td><b-button variant="success">Editar</b-button></td>
-          <td><b-button variant="danger">Eliminar</b-button></td>
+          <td>
+            <b-button variant="danger" @click="eliminarPatient(p.id)"
+              >Eliminar</b-button
+            >
+          </td>
         </tr>
       </tbody>
     </table>
@@ -35,7 +39,13 @@ export default {
     ...mapState(["patients"]),
   },
   methods: {
-    ...mapActions(["getPatients"]),
+    ...mapActions(["getPatients", "deletePatient"]),
+    eliminarPatient(id) {
+      const confirmar = confirm("¿Seguro que quieres eliminar este paciente?");
+      if (confirmar) {
+        this.deletePatient(id);
+      }
+    },
   },
   created() {
     this.getPatients();
