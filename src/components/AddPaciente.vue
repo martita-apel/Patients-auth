@@ -1,13 +1,14 @@
 <template>
   <b-card style="max-width: 30rem" class="mx-auto p-2 mt-3 mb-4">
-    <b-form :model="patient">
+    <b-form>
       <h3 class="pb-0">Ingresar nuevo paciente</h3>
       <b-form inline>
         <b-form-input
           class="my-1 mx-1"
           placeholder="Nombre"
           type="text"
-          v-model="patient.name"
+          :value="patient.data.name"
+          @input="addName"
           required
         ></b-form-input>
 
@@ -15,7 +16,8 @@
           class="my-1 mx-1"
           placeholder="Apellido"
           type="text"
-          v-model="patient.lastname"
+          :value="patient.data.lastname"
+          @input="addLastname"
           required
         ></b-form-input>
       </b-form>
@@ -25,7 +27,8 @@
           class="my-1 mx-1"
           placeholder="Email"
           type="text"
-          v-model="patient.email"
+          :value="patient.data.email"
+          @input="addEmail"
           required
         ></b-form-input>
 
@@ -34,15 +37,12 @@
           style="max-width: 7rem"
           placeholder="Edad"
           type="number"
-          v-model="patient.age"
+          :value="patient.data.age"
+          @input="addAge"
           required
         ></b-form-input>
 
-        <b-button
-          class="my-1 mx-1"
-          type="submit"
-          variant="warning"
-          @click="addPatient"
+        <b-button class="my-1 mx-1" variant="warning" @click="agregarPatient"
           >Añadir</b-button
         >
       </b-form>
@@ -60,19 +60,25 @@
 
 <script>
 import firebase from "firebase";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "AddPaciente",
   data() {
-    return {
-      patient: {
-        name: "",
-        email: "",
-        age: "",
-      },
-    };
+    return {};
+  },
+  computed: {
+    ...mapState(["patient"]),
   },
   methods: {
+    ...mapActions([
+      "getPatients",
+      "addPatient",
+      "addName",
+      "addLastname",
+      "addEmail",
+      "addAge",
+    ]),
     login(e) {
       e.preventDefault();
       firebase
@@ -87,7 +93,13 @@ export default {
           console.log("Usuario no autenticado");
         });
     },
-    addPatient() {},
+    agregarPatient() {
+      this.addPatient();
+      alert("¡El paciente se ha registrado exitosamente!");
+    },
+  },
+  created() {
+    this.getPatients();
   },
 };
 </script>

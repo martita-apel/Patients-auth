@@ -32,12 +32,13 @@ router.get("/patients", async (req, res) => {
 });
 
 router.post("/patient", async (req, res) => {
-  const patient = await admin
+  await admin
     .firestore()
     .collection("patients")
     .add(req.body);
-  res.send(patient);
+  res.send(req.body);
 });
+
 router.put("/patient/:id", async (req, res) => {
   const patient = await admin
     .firestore()
@@ -46,6 +47,7 @@ router.put("/patient/:id", async (req, res) => {
     .update(req.body);
   res.send(patient);
 });
+
 router.delete("/patient/:id", async (req, res) => {
   const patient = await admin
     .firestore()
