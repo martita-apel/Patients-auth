@@ -1,18 +1,40 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <b-container direction="vertical">
+    <h1>Registro de Pacientes</h1>
+
+    <Pacientes />
+    <Add-Paciente />
+
+    <b-button :xs="8" class="mb-4" type="danger" @click="logout"
+      >Cerrar Sesión</b-button
+    >
+  </b-container>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import AddPaciente from "@/components/AddPaciente.vue";
+import Pacientes from "@/components/Pacientes.vue";
+import firebase from "firebase";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld
-  }
-}
+    AddPaciente,
+    Pacientes,
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.push("/login");
+        });
+    },
+  },
+};
 </script>
