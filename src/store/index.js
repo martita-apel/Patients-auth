@@ -47,6 +47,13 @@ export default new Vuex.Store({
     STOP_LOADING(state) {
       state.loading = false;
     },
+    RESET_FORM(state) {
+      state.patient.id = null;
+      state.patient.data.name = "";
+      state.patient.data.lastname = "";
+      state.patient.data.email = "";
+      state.patient.data.age = "";
+    },
   },
   actions: {
     getPatients({ commit }) {
@@ -57,6 +64,7 @@ export default new Vuex.Store({
         )
         .then((response) => {
           commit("GET_PATIENTS", response.data);
+          commit("RESET_FORM");
         })
         .finally(() => {
           commit("STOP_LOADING");
@@ -110,6 +118,7 @@ export default new Vuex.Store({
         )
         .then(() => {
           dispatch("getPatients");
+          dispatch("updateEdit");
         });
     },
     deletePatient({ commit, dispatch }, id) {
