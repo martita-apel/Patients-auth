@@ -8,7 +8,7 @@
           size="sm"
           variant="info"
           v-if="edit"
-          @click="actualizarPatient"
+          @click="actualizarPatient(patient.id)"
           >Actualizar</b-button
         >
       </h3>
@@ -101,8 +101,8 @@ export default {
       this.addPatient();
       alert("¡El paciente se ha registrado exitosamente!");
     },
-    actualizarPatient() {
-      this.updatePatient();
+    actualizarPatient(id) {
+      this.updatePatient(id);
     },
   },
   created() {

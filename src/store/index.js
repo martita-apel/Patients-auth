@@ -88,6 +88,17 @@ export default new Vuex.Store({
           commit("SET_PATIENT", response.data);
         });
     },
+    updatePatient({ dispatch, state }, id) {
+      const paciente = state.patient.data;
+      axios
+        .put(
+          `https://us-central1-pacientes-d1b71.cloudfunctions.net/patients/patient/${id}`,
+          paciente
+        )
+        .then(() => {
+          dispatch("getPatients");
+        });
+    },
     deletePatient({ dispatch }, id) {
       axios
         .delete(
